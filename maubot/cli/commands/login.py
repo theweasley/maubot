@@ -71,7 +71,8 @@ async def login(
             print(Fore.GREEN + "Logged in successfully")
         else:
             try:
-                err = (await resp.json())["error"]
-            except (json.JSONDecodeError, KeyError):
+                err_data = await resp.json()
+                err = err_data.get("error", str(err_data))
+            except json.JSONDecodeError:
                 err = await resp.text()
-            print(Fore.RED + err + Fore.RESET)
+            print(Fore.RED + str(err) + Fore.RESET)
